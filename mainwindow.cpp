@@ -12,8 +12,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->leftImgConfig.append(new DeviceConfig("img/zj.png", true, "2Mbps"));
     this->leftImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
+    this->leftImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
+    this->leftImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
+    this->leftImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
 
     this->rightImgConfig.append(new DeviceConfig("img/zj.png", true, "1/3"));
+    this->rightImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
     this->rightImgConfig.append(new DeviceConfig("img/zj.png", true, ""));
 
     this->centralConfig = new DeviceConfig("img/pc.png", true, "中控");
@@ -58,7 +62,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::handleTimeout(){
     // TODO test network
-    qDebug()<<"timeout"<<endl;
     for (auto& device:this->leftImgConfig) {
         device->getFlagwiget()->setFlag(!device->getFlagwiget()->getFlag());
     }
