@@ -1,0 +1,86 @@
+<系统监控软件配置文件>
+	<常规>
+        <系统ID>ID001</系统ID >
+		<系统名称>监控系统</系统名称>
+		<监视文件夹>filepath</监视文件夹>
+		<历史文件夹>filepath</历史文件夹>
+		<错误文件夹>filepath</错误文件夹>
+		<导出文件夹>filepath</导出文件夹>
+		<刷新显示间隔秒数>5 </刷新显示间隔秒数>
+		<状态上报间隔秒数>600</状态上报间隔秒数>
+        <数据库host>127.0.0.1:3306</数据库host>
+        <数据库dbname>mydb</数据库dbname>
+        <数据库username>username</数据库username>
+        <数据库password>password</数据库password>
+	</常规>
+    <中控>
+        <property name="设备名称" value="中控" />
+        <property name="设备ID" value=" 01" />
+        <property name="设备类型" value="ZK" />
+        <property name="设备图标" value="img/pc.png" />
+        <property name="运行状态" readDatabase="1" />
+        <property name="电源" value="读数据库" />
+        <property name="内侧内存容量" value="读数据库" readDatabase="1" unit="GB" multiple="0.1"/>
+    </中控>
+	<中继>
+		<配备>1</配备>		// 1-有配备，0-未配备
+		<发中继>
+            <property name="设备名称" value="发中继" />
+            <property name="设备ID" value="11" />
+            <property name="设备类型" value="ZJF" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </发中继>
+		<收中继>
+            <property name="设备名称" value="收中继" />
+            <property name="设备ID" value="12 " />
+            <property name="设备类型" value="ZJS" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </收中继>
+	</中继>
+	<接入>
+        <接入设备>
+            <property name="设备名称" value="接入设备1" />
+            <property name="设备ID" value=" 31 " />
+            <property name="设备类型" value="JR" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </接入设备>
+        <接入设备>
+            <property name="设备名称" value="接入设备3" />
+            <property name="设备ID" value="33 " />
+            <property name="设备类型" value="JR" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </接入设备>
+	</接入>
+	<转发>
+        <转发设备>
+            <property name="设备名称" value="接入设备1" />
+            <property name="设备ID" value=" 31 " />
+            <property name="设备类型" value="JR" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </转发设备>
+        <转发设备>
+            <property name="设备名称" value="接入设备3" />
+            <property name="设备ID" value="33 " />
+            <property name="设备类型" value="JR" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" value="读数据库" />
+            <property name="电源" value="读数据库" />
+            <property name="其它参数等" value="读数据库" />
+        </转发设备>
+	</转发>
+</系统监控软件配置文件>

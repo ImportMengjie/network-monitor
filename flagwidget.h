@@ -3,8 +3,7 @@
 
 #include <QWidget>
 
-class FlagWidget : public QWidget
-{
+class FlagWidget : public QWidget {
     Q_OBJECT
 public:
     explicit FlagWidget(QWidget *parent = nullptr);
@@ -12,7 +11,7 @@ public:
 
     void paintEvent(QPaintEvent *event);
 
-    void setFlag(bool flag){
+    void setFlag(int flag){
         this->flag = flag;
 //        this->paintEvent(nullptr);
         this->repaint();
@@ -24,7 +23,7 @@ public:
 
 private:
     int height_;
-    bool flag;
+    int flag;
     bool useFlag;
 
 signals:

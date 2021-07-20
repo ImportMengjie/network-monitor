@@ -22,6 +22,11 @@ QString DeviceInfo::getDeviceType() {
     return data[DeviceInfo::DeviceType].value;
 }
 
-QString DeviceInfo::getDeivceState() {
+QString DeviceInfo::getDeviceState() {
     return data[DeviceInfo::DeviceState].value;
+}
+
+QString DeviceInfo::getDeviceIco()
+{
+    return data[DeviceInfo::DeviceIco].value;
 }

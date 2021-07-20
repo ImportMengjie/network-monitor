@@ -12,6 +12,8 @@ struct Value{
     bool readDatabase = false;
     QString mask = "";
     QString key = "";
+    QString unit = "";
+    double multiple = 1;
 
     bool loadFromAttributes(const QXmlStreamAttributes& attributes){
 
@@ -35,6 +37,12 @@ struct Value{
         if(attributes.hasAttribute("mask")){
             this->mask = attributes.value("mask").toString();
         }
+        if(attributes.hasAttribute("unit")){
+            this->unit = attributes.value("unit").toString();
+        }
+        if(attributes.hasAttribute("multiple")){
+            this->multiple = attributes.value("multiple").toDouble();
+        }
         return true;
     }
 
@@ -51,15 +59,20 @@ public:
     DeviceInfo();
 
     QMap<QString, Value> data;
+    QVector<Value> otherList;
+    int deviceState = 3;
 
     void addValue(const Value& v){
         data[v.key] = v;
+        if(v.key!=DeviceName&&v.key!=DeviceID&&v.key!=DeviceType&&v.key!=DeviceState&&v.key!=DeviceIco)
+            otherList.append(v);
     }
 
     QString getDeviceName();
     QString getDeviceId();
     QString getDeviceType();
-    QString getDeivceState();
+    QString getDeviceState();
+    QString getDeviceIco();
 
 };
 

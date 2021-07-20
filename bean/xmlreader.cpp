@@ -54,6 +54,11 @@ bool XmlReader::readFromXml() {
                                 baseconfig.errorDir = reader.text().toString();
                             }else
                                 return false;
+                        } else if(reader.name()=="导出文件夹"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.outputDir = reader.text().toString();
+                            }else
+                                return false;
                         } else if(reader.name()=="刷新显示间隔秒数"){
                             if(reader.readNext()==reader.Characters){
                                 baseconfig.refreshInterval = reader.text().toUInt();
@@ -62,6 +67,26 @@ bool XmlReader::readFromXml() {
                         } else if(reader.name()=="状态上报间隔秒数"){
                             if(reader.readNext()==reader.Characters){
                                 baseconfig.reportInterval = reader.text().toUInt();
+                            }else
+                                return false;
+                        } else if(reader.name()=="数据库host"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbHost = reader.text().toString();
+                            }else
+                                return false;
+                        } else if(reader.name()=="数据库dbname"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbName = reader.text().toString();
+                            }else
+                                return false;
+                        } else if(reader.name()=="数据库username"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbUserName = reader.text().toString();
+                            }else
+                                return false;
+                        } else if(reader.name()=="数据库password"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbPassword = reader.text().toString();
                             }else
                                 return false;
                         }
@@ -79,36 +104,37 @@ bool XmlReader::readFromXml() {
                     reader.readNext();
                 }
             } else if(reader.name()=="中继"){
-                DeviceInfo deviceInfo;
-                if(reader.isStartElement() && reader.name()=="配置"){
-                    if(reader.readNext()==reader.Characters){
+                while(!(reader.name()=="中继"&&reader.isEndElement())){
+                    if(reader.isStartElement() && reader.name()=="配备"){
+                        if(reader.readNext()==reader.Characters){
                         useBridge = reader.text().toInt();
-                    }else
+                        }else
                         return false;
-                }
-                else if(reader.isStartElement() && reader.name()=="发中继"){
-                    while(!(reader.name()=="发中继"&&reader.isEndElement())){
+                    }
+                    else if(reader.isStartElement() && reader.name()=="发中继"){
+                        while(!(reader.name()=="发中继"&&reader.isEndElement())){
                         if(reader.isStartElement() && reader.name()=="property"){
                             Value v;
                             if(!v.loadFromAttributes(reader.attributes()))
-                                return false;
+                            return false;
                             sendBridgeDevice.addValue(v);
                         }
                         reader.readNext();
-                    }
-                } else if(reader.isStartElement() && reader.name()=="收中继"){
-                    while(!(reader.name()=="收中继"&&reader.isEndElement())){
+                        }
+                    } else if(reader.isStartElement() && reader.name()=="收中继"){
+                        while(!(reader.name()=="收中继"&&reader.isEndElement())){
                         if(reader.isStartElement() && reader.name()=="property"){
                             Value v;
                             if(!v.loadFromAttributes(reader.attributes()))
-                                return false;
+                            return false;
                             receiveBridgeDevice.addValue(v);
                         }
                         reader.readNext();
-                    }
+                        }
 
+                    }
+                    reader.readNext();
                 }
-                reader.readNext();
             } else if(reader.name()=="接入"){
                 while(!(reader.name()=="接入"&&reader.isEndElement())){
                     if(reader.name()=="接入设备"){
@@ -147,7 +173,6 @@ bool XmlReader::readFromXml() {
             }
         }
         reader.readNext();
-
     }
     return true;
 }

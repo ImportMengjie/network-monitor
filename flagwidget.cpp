@@ -2,15 +2,15 @@
 #include <QPainter>
 #include <QColor>
 
-FlagWidget::FlagWidget(QWidget *parent) : QWidget(parent), height_(0), flag(true), useFlag(false)
+FlagWidget::FlagWidget(QWidget *parent) : QWidget(parent), height_(0), flag(3), useFlag(false)
 {
 
 }
 
 
 FlagWidget::FlagWidget(int height,QWidget* parent, bool useFlag)
-    :QWidget(parent), height_(height), flag(true), useFlag(useFlag) {
-    this->setFixedSize(height*2, height);
+    :QWidget(parent), height_(height), flag(3), useFlag(useFlag) {
+    this->setFixedSize(height, height);
 }
 
 
@@ -23,15 +23,11 @@ void FlagWidget::paintEvent(QPaintEvent *event){
     QBrush greenBrush(Qt::green);
     QPainter painter(this);
     painter.setPen(pen);
-    if(flag)
+    if(flag==0)
+        painter.setBrush(redBrush);
+    else if(flag==1)
         painter.setBrush(greenBrush);
     else
         painter.setBrush(grayBrush);
-    painter.drawEllipse(0, 0, height_/2-2, height_/2-2);
-
-    if(flag)
-        painter.setBrush(grayBrush);
-    else
-        painter.setBrush(redBrush);
-    painter.drawEllipse(height_/2-2, 0, height_/2-2, height_/2-2);
+    painter.drawEllipse(0, 0, height_-2, height_-2);
 }

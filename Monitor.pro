@@ -20,6 +20,7 @@ SOURCES += \
     bean/deviceinfo.cpp \
     bean/xmlreader.cpp \
     deviceconfig.cpp \
+    devicewidget.cpp \
     flagwidget.cpp \
     main.cpp \
     mainwindow.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     bean/deviceinfo.h \
     bean/xmlreader.h \
     deviceconfig.h \
+    devicewidget.h \
     flagwidget.h \
     mainwindow.h
 
