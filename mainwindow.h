@@ -6,7 +6,7 @@
 #include <QLabel>
 #include "deviceconfig.h"
 #include "bean/xmlreader.h"
-#include "devicewidget.h"
+#include "widget/devicewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

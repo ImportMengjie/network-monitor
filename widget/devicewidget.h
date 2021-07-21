@@ -6,7 +6,7 @@
 #include <QWidget>
 #include <QtGui>
 #include "bean/xmlreader.h"
-#include "flagwidget.h"
+#include "widget/flagwidget.h"
 
 struct DeviceWidgets{
     QLabel* text;

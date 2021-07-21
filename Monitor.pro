@@ -20,8 +20,10 @@ SOURCES += \
     bean/deviceinfo.cpp \
     bean/xmlreader.cpp \
     deviceconfig.cpp \
-    devicewidget.cpp \
-    flagwidget.cpp \
+    file/crcchecksum.cpp \
+    file/runningstate.cpp \
+    widget/devicewidget.cpp \
+    widget/flagwidget.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -30,8 +32,10 @@ HEADERS += \
     bean/deviceinfo.h \
     bean/xmlreader.h \
     deviceconfig.h \
-    devicewidget.h \
-    flagwidget.h \
+    file/crcchecksum.h \
+    file/runningstate.h \
+    widget/devicewidget.h \
+    widget/flagwidget.h \
     mainwindow.h
 
 FORMS += \

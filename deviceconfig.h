@@ -2,7 +2,7 @@
 #define DEVICECONFIG_H
 
 #include <QLabel>
-#include "flagwidget.h"
+#include "widget/flagwidget.h"
 
 class DeviceConfig
 {

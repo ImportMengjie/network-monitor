@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "deviceconfig.h"
-#include "devicewidget.h"
+#include "widget/devicewidget.h"
 #include <QLabel>
 #include <QDebug>
 #include <QPainter>
