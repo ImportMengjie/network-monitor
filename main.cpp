@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     reader.readFromXml();
 
     MainWindow w(&reader);
+    w.setWindowTitle(reader.baseconfig.sytemName+":"+reader.baseconfig.sytemId);
     w.show();
     return a.exec();
 }

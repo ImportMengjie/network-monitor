@@ -19,8 +19,8 @@
         <property name="设备类型" value="ZK" />
         <property name="设备图标" value="img/pc.png" />
         <property name="运行状态" readDatabase="1" />
-        <property name="电源" value="读数据库" />
-        <property name="内侧内存容量" value="读数据库" readDatabase="1" unit="GB" multiple="0.1"/>
+        <property name="电源" readDatabase="1" />
+        <property name="内侧内存容量"  readDatabase="1" unit="GB" multiple="0.1"/>
     </中控>
 	<中继>
 		<配备>1</配备>		// 1-有配备，0-未配备
@@ -29,58 +29,103 @@
             <property name="设备ID" value="11" />
             <property name="设备类型" value="ZJF" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
         </发中继>
 		<收中继>
             <property name="设备名称" value="收中继" />
-            <property name="设备ID" value="12 " />
+            <property name="设备ID" value="12" />
             <property name="设备类型" value="ZJS" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
         </收中继>
 	</中继>
 	<接入>
         <接入设备>
             <property name="设备名称" value="接入设备1" />
-            <property name="设备ID" value=" 31 " />
+            <property name="设备ID" value="31" />
             <property name="设备类型" value="JR" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
+        </接入设备>
+        <接入设备>
+            <property name="设备名称" value="接入设备2" />
+            <property name="设备ID" value="32" />
+            <property name="设备类型" value="JR" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
         </接入设备>
         <接入设备>
             <property name="设备名称" value="接入设备3" />
-            <property name="设备ID" value="33 " />
+            <property name="设备ID" value="33" />
             <property name="设备类型" value="JR" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等"  readDatabase="1"/>
         </接入设备>
 	</接入>
 	<转发>
         <转发设备>
-            <property name="设备名称" value="接入设备1" />
-            <property name="设备ID" value=" 31 " />
-            <property name="设备类型" value="JR" />
+            <property name="设备名称" value="转发设备1" />
+            <property name="设备ID" value=" 51" />
+            <property name="设备类型" value="ZF" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
         </转发设备>
         <转发设备>
-            <property name="设备名称" value="接入设备3" />
-            <property name="设备ID" value="33 " />
-            <property name="设备类型" value="JR" />
+            <property name="设备名称" value="转发设备2" />
+            <property name="设备ID" value="52" />
+            <property name="设备类型" value="ZF" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" value="读数据库" />
-            <property name="电源" value="读数据库" />
-            <property name="其它参数等" value="读数据库" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
         </转发设备>
+        <转发设备>
+            <property name="设备名称" value="转发设备3" />
+            <property name="设备ID" value="53" />
+            <property name="设备类型" value="ZF" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
+        </转发设备>
+        <转发设备>
+            <property name="设备名称" value="转发设备4" />
+            <property name="设备ID" value="54" />
+            <property name="设备类型" value="ZF" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
+        </转发设备>
+        <转发设备>
+            <property name="设备名称" value="转发设备5" />
+            <property name="设备ID" value="55" />
+            <property name="设备类型" value="ZF" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
+        </转发设备>
+        <!-- <转发设备>
+            <property name="设备名称" value="转发设备6" />
+            <property name="设备ID" value="56" />
+            <property name="设备类型" value="ZF" />
+            <property name="设备图标" value="img/pc.png" />
+            <property name="运行状态" readDatabase="1" />
+            <property name="电源" readDatabase="1" />
+            <property name="其它参数等" readDatabase="1" />
+        </转发设备> -->
 	</转发>
 </系统监控软件配置文件>
