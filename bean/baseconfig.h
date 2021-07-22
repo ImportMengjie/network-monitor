@@ -18,10 +18,12 @@ public:
     uint refreshInterval;
     uint reportInterval;
 
+    QString dbDriver;
     QString dbHost;
     QString dbName;
     QString dbUserName;
     QString dbPassword;
+    int dbPort;
 };
 
 #endif // BASECONFIG_H

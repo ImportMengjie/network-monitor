@@ -2,6 +2,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QT += sql
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -21,7 +23,9 @@ SOURCES += \
     bean/xmlreader.cpp \
     deviceconfig.cpp \
     file/crcchecksum.cpp \
+    file/pathutils.cpp \
     file/runningstate.cpp \
+    parsedatathread.cpp \
     widget/devicewidget.cpp \
     widget/flagwidget.cpp \
     main.cpp \
@@ -33,7 +37,9 @@ HEADERS += \
     bean/xmlreader.h \
     deviceconfig.h \
     file/crcchecksum.h \
+    file/pathutils.h \
     file/runningstate.h \
+    parsedatathread.h \
     widget/devicewidget.h \
     widget/flagwidget.h \
     mainwindow.h

@@ -29,6 +29,10 @@ public:
 
     bool readFromXml();
 
+    bool isDeviceGood(const QString& deviceId, const QString& content, const QString& runningState){
+        return true;
+    }
+
 };
 
 #endif // XMLREADER_H

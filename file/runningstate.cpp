@@ -18,8 +18,9 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
     }
     QByteArray totalData = file.readAll();
     file.close();
-    if(totalData.size()>18){
+    if(totalData.size()<18){
         qWarning()<<filePath<<" file size is "<<totalData.size()<<endl;
+        return false;
     }
     quint16 crc = totalData.right(2).toShort();
     QByteArray data = totalData.left(totalData.size()-2);
@@ -41,6 +42,8 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
     minus = readAndMove(data, left, 1).toUInt();
     sec = readAndMove(data, left,1).toUInt();
     millisec = readAndMove(data,left,2).toUInt();
+    runningState.reportDateTime.setDate(QDate(year, month, day));
+    runningState.reportDateTime.setTime(QTime(hours, minus, sec, millisec));
     runningState.reportTime = QString("%1-%2-%3 %4:%5:%6:%7")
             .arg(year)
             .arg(month, 2, 10, QLatin1Char('0'))

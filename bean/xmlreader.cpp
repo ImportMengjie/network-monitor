@@ -69,6 +69,11 @@ bool XmlReader::readFromXml() {
                                 baseconfig.reportInterval = reader.text().toUInt();
                             }else
                                 return false;
+                        } else if(reader.name()=="数据库dirver"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbDriver = reader.text().toString();
+                            }else
+                                return false;
                         } else if(reader.name()=="数据库host"){
                             if(reader.readNext()==reader.Characters){
                                 baseconfig.dbHost = reader.text().toString();
@@ -87,6 +92,11 @@ bool XmlReader::readFromXml() {
                         } else if(reader.name()=="数据库password"){
                             if(reader.readNext()==reader.Characters){
                                 baseconfig.dbPassword = reader.text().toString();
+                            }else
+                                return false;
+                        } else if(reader.name()=="数据库port"){
+                            if(reader.readNext()==reader.Characters){
+                                baseconfig.dbPort = reader.text().toInt();
                             }else
                                 return false;
                         }

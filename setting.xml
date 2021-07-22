@@ -6,16 +6,18 @@
 		<历史文件夹>filepath</历史文件夹>
 		<错误文件夹>filepath</错误文件夹>
 		<导出文件夹>filepath</导出文件夹>
-		<刷新显示间隔秒数>5 </刷新显示间隔秒数>
+		<刷新显示间隔秒数>5</刷新显示间隔秒数>
 		<状态上报间隔秒数>600</状态上报间隔秒数>
+        <数据库driver>QKINGBASE</数据库driver>
         <数据库host>127.0.0.1:3306</数据库host>
         <数据库dbname>mydb</数据库dbname>
         <数据库username>username</数据库username>
         <数据库password>password</数据库password>
+        <数据库port>3306</数据库port>
 	</常规>
     <中控>
         <property name="设备名称" value="中控" />
-        <property name="设备ID" value=" 01" />
+        <property name="设备ID" value="01" />
         <property name="设备类型" value="ZK" />
         <property name="设备图标" value="img/pc.png" />
         <property name="运行状态" readDatabase="1" />
