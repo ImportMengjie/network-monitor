@@ -1,11 +1,17 @@
 #include "devicewidget.h"
 
+#include <QSqlError>
+
 const int DeviceWidget::imgHeight = 100;
 const int DeviceWidget::imgWidth = 100;
+const QString DeviceWidget::goodState="6A";
+const QString DeviceWidget::badState="40";
+const QString DeviceWidget::selectRunningStateSegment = "SELECT * FROM running_state where deviceid=:deviceid order by create_datetime DESC limit 1";
 
 DeviceWidget::DeviceWidget(XmlReader config, QWidget *parent)
-    :QWidget(parent), monitorLayout(parent), config(config){
+    :QWidget(parent), monitorLayout(parent), config(config), thread(config){
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
 
     for(auto& device:config.sendDeviceList){
         this->leftWidgets.append(genWidgetsFromDeviceInfo(&device));
@@ -54,12 +60,46 @@ DeviceWidget::DeviceWidget(XmlReader config, QWidget *parent)
         monitorLayout.addWidget(rightWidgets[i].flag, right_row, right_left_col-1, Qt::AlignBottom|Qt::AlignRight);
     }
     this->setLayout(&monitorLayout);
+
+    totalWidgets.append(centerWidget);
+    if(config.useBridge){
+        for(auto& device:midWidgets)
+            totalWidgets.append(device);
+    }
+    for(auto& device:leftWidgets)
+        totalWidgets.append(device);
+    for(auto& device:rightWidgets)
+        totalWidgets.append(device);
+
+    db = QSqlDatabase::addDatabase(config.baseconfig.dbDriver);
+
+    db.setHostName(config.baseconfig.dbHost);
+    db.setDatabaseName(config.baseconfig.dbName);
+    db.setUserName(config.baseconfig.dbUserName);
+    db.setPassword(config.baseconfig.dbPassword);
+    db.setPort(config.baseconfig.dbPort);
+    db.setConnectOptions("connect_timeout=2");
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateUi()));
+    connect(&thread, SIGNAL(refreshUi()), this, SLOT(updateUi()));
+    timer->start(config.baseconfig.refreshInterval*1000);
+    this->thread.start();
+}
+
+void DeviceWidget::addStatusFiles(const QStringList &files) {
+    if(files.size()){
+        QVector<QString> v;
+        for(int i=0;i<files.size();i++)
+        v.append(files[i]);
+        thread.addDataPaths(v);
+    }
 }
 
 DeviceWidgets DeviceWidget::genWidgetsFromDeviceInfo(DeviceInfo* v) {
     DeviceWidgets ret;
 
-    ret.deviceInfo = v;
+    ret.deviceInfo = new DeviceInfo(*v);
     ret.text = new QLabel();
     ret.flag = new FlagWidget(DeviceWidget::imgHeight/4);
     ret.img = new QLabel();
@@ -82,6 +122,61 @@ void DeviceWidget::setDeviceWidgetsInfo(DeviceWidgets &deviceWidgets) {
     deviceWidgets.flag->setFlag(deviceInfo->deviceState);
 }
 
+int DeviceWidget::getStatuValue(const QString &content, const QString &mask) {
+    int left = mask.indexOf("f",0, Qt::CaseInsensitive);
+    int right = mask.indexOf("f", left, Qt::CaseInsensitive);
+    int ret = content.mid(left, right-left+1).toUInt(nullptr, 16);
+    return ret;
+}
+
+void DeviceWidget::updateUi() {
+    if(!db.isOpen())
+        db.open();
+    if(db.isOpen()) {
+        QSqlQuery selectRunningStateQuery(db);
+        selectRunningStateQuery.prepare(DeviceWidget::selectRunningStateSegment);
+        for(auto& device:totalWidgets){
+            selectRunningStateQuery.bindValue(":deviceid", device.deviceInfo->DeviceID);
+            selectRunningStateQuery.exec();
+            if(selectRunningStateQuery.isActive()&&selectRunningStateQuery.first()){
+                QDateTime create_datetime = selectRunningStateQuery.value(2).toDateTime();
+                QDateTime current_datetime = QDateTime::currentDateTime();
+                if(create_datetime.secsTo(current_datetime)<config.baseconfig.reportInterval){
+                    QString state = selectRunningStateQuery.value(4).toString();
+                    QString content = selectRunningStateQuery.value(5).toString();
+                    if(state==goodState)
+                        device.deviceInfo->deviceState = 1;
+                    else
+                        device.deviceInfo->deviceState = 2;
+                    for(auto& value:device.deviceInfo->otherList){
+                        if(value.mask.size()){
+                            uint val = getStatuValue(content, value.mask);
+                            if(val<value.min_value.toUInt()||val>value.max_value.toUInt()){
+                                device.deviceInfo->deviceState = 2;
+                            }
+                            if(value.multiple)
+                                val*=value.multiple;
+                            value.value = QString::number(val)+value.unit;
+                        }
+                    }
+                }else{
+                    // outdate
+                    device.deviceInfo->deviceState = 3;
+                }
+
+            }else{
+                device.deviceInfo->deviceState = 3;
+            }
+            setDeviceWidgetsInfo(device);
+        }
+    }else{
+        qWarning() << db.lastError();
+        for(auto& device:totalWidgets){
+            device.deviceInfo->deviceState = 3;
+            setDeviceWidgetsInfo(device);
+        }
+    }
+}
 
 
 

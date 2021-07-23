@@ -1,17 +1,20 @@
 #include "deviceinfo.h"
 
-QString DeviceInfo::DeviceName = "设备名称";
-QString DeviceInfo::DeviceID = "设备ID";
-QString DeviceInfo::DeviceType = "设备类型";
-QString DeviceInfo::DeviceState = "设备状态";
-QString DeviceInfo::DeviceIco = "设备图标";
+const QString DeviceInfo::DeviceName = "设备名称";
+const QString DeviceInfo::DeviceID = "设备ID";
+const QString DeviceInfo::DeviceType = "设备类型";
+const QString DeviceInfo::DeviceState = "设备状态";
+const QString DeviceInfo::DeviceIco = "设备图标";
 
 DeviceInfo::DeviceInfo() {
 
 }
 
 QString DeviceInfo::getDeviceName() {
-    return data[DeviceInfo::DeviceName].value;
+    if(data.count(DeviceInfo::DeviceName))
+        return data[DeviceInfo::DeviceName].value;
+    else
+        return "";
 }
 
 QString DeviceInfo::getDeviceId() {

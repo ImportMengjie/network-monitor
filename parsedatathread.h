@@ -17,6 +17,10 @@ public:
 
     void addDataPaths(const QVector<QString>& data);
 
+    ~ParseDataThread(){
+        this->terminate();
+    }
+
 signals:
     void refreshUi();
 

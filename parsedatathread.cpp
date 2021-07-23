@@ -80,7 +80,7 @@ bool ParseDataThread::consumer_data_paths(QQueue<QString> &dataPaths, const XmlR
 }
 
 void ParseDataThread::run() {
-    QSqlDatabase db = QSqlDatabase::addDatabase(config.baseconfig.dbDriver);
+    QSqlDatabase db = QSqlDatabase::addDatabase(config.baseconfig.dbDriver, "Parse_thread_connect");
 
     db.setHostName(config.baseconfig.dbHost);
     db.setDatabaseName(config.baseconfig.dbName);

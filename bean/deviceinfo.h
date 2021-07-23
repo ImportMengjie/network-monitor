@@ -51,11 +51,11 @@ struct Value{
 class DeviceInfo
 {
 public:
-    static QString DeviceName;
-    static QString DeviceID;
-    static QString DeviceType;
-    static QString DeviceState;
-    static QString DeviceIco;
+    static const QString DeviceName;
+    static const QString DeviceID;
+    static const QString DeviceType;
+    static const QString DeviceState;
+    static const QString DeviceIco;
     DeviceInfo();
 
     QMap<QString, Value> data;

@@ -4,9 +4,12 @@
 #include <QMainWindow>
 #include <QLayout>
 #include <QLabel>
+#include <QAction>
+#include <QMenu>
 #include "deviceconfig.h"
 #include "bean/xmlreader.h"
 #include "widget/devicewidget.h"
+#include "parsedatathread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,21 +23,29 @@ public:
     MainWindow(XmlReader* config,QWidget *parent = nullptr);
     ~MainWindow();
 
-    void paintEvent(QPaintEvent *event);
+    void createActions();
+    void createMenu();
+
 
 public slots:
-    void handleTimeout();
+    void openFiles();
+    void generateInstructions();
+    void lookupLog();
 
 private:
     XmlReader* config;
+
+    QAction* openFilesAction;
+    QAction* exitAction;
+    QAction* generateInstructionsAction;
+    QAction* lookupLogAction;
+
+    QMenu* fileMenu;
+    QMenu* toolsMenu;
+
     Ui::MainWindow *ui;
     QGridLayout monitorLayout;
-    QVector<DeviceConfig*> leftImgConfig;
-    QVector<DeviceConfig*> rightImgConfig;
-    QVector<QLabel*> flags;
-    DeviceConfig* centralConfig;
     QVBoxLayout mainLayout;
-    QTimer* timer;
     DeviceWidget* deviceWidget;
 };
 #endif // MAINWINDOW_H

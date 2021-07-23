@@ -29,7 +29,7 @@ public:
 
     bool readFromXml();
 
-    bool isDeviceGood(const QString& deviceId, const QString& content, const QString& runningState){
+    bool isDeviceGood(const QString& deviceId, const QString& content, const QString& runningState) const{
         return true;
     }
 

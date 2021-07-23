@@ -69,7 +69,7 @@ bool XmlReader::readFromXml() {
                                 baseconfig.reportInterval = reader.text().toUInt();
                             }else
                                 return false;
-                        } else if(reader.name()=="数据库dirver"){
+                        } else if(reader.name()=="数据库driver"){
                             if(reader.readNext()==reader.Characters){
                                 baseconfig.dbDriver = reader.text().toString();
                             }else
