@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 
     MainWindow w(&reader);
     w.setWindowTitle(reader.baseconfig.sytemName+":"+reader.baseconfig.sytemId);
-    w.show();
+//    w.show();
+    w.showMaximized();
     return a.exec();
 }

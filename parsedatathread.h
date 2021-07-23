@@ -19,6 +19,7 @@ public:
 
     ~ParseDataThread(){
         this->terminate();
+        this->wait();
     }
 
 signals:

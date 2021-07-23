@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "deviceconfig.h"
 #include "widget/devicewidget.h"
+#include "window/lookuplogdialog.h"
 #include <QSqlError>
 #include <QLabel>
 #include <QDebug>
@@ -18,6 +19,7 @@ MainWindow::MainWindow(XmlReader* config,QWidget *parent)
     deviceWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mainLayout.addWidget(deviceWidget);
     ui->centralwidget->setLayout(&mainLayout);
+    lookUpLogDialog = new LookUpLogDialog(*config);
 
     createActions();
     createMenu();
@@ -64,6 +66,7 @@ void MainWindow::generateInstructions() {
 }
 
 void MainWindow::lookupLog() {
+    lookUpLogDialog->show();
 
 }
 

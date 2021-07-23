@@ -29,7 +29,8 @@ SOURCES += \
     widget/devicewidget.cpp \
     widget/flagwidget.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    window/lookuplogdialog.cpp
 
 HEADERS += \
     bean/baseconfig.h \
@@ -42,10 +43,12 @@ HEADERS += \
     parsedatathread.h \
     widget/devicewidget.h \
     widget/flagwidget.h \
-    mainwindow.h
+    mainwindow.h \
+    window/lookuplogdialog.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    window/lookuplogdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

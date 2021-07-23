@@ -10,6 +10,7 @@
 #include "bean/xmlreader.h"
 #include "widget/devicewidget.h"
 #include "parsedatathread.h"
+#include "window/lookuplogdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,6 +40,8 @@ private:
     QAction* exitAction;
     QAction* generateInstructionsAction;
     QAction* lookupLogAction;
+
+    LookUpLogDialog* lookUpLogDialog;
 
     QMenu* fileMenu;
     QMenu* toolsMenu;
