@@ -6,13 +6,13 @@
 		<历史文件夹>filepath</历史文件夹>
 		<错误文件夹>filepath</错误文件夹>
 		<导出文件夹>filepath</导出文件夹>
-		<刷新显示间隔秒数>5</刷新显示间隔秒数>
-		<状态上报间隔秒数>600</状态上报间隔秒数>
+		<刷新显示间隔秒数>1</刷新显示间隔秒数>
+		<状态上报间隔秒数>6</状态上报间隔秒数>
         <数据库driver>QMYSQL</数据库driver>
-        <数据库host>127.0.0.1:3306</数据库host>
+        <数据库host>127.0.0.1</数据库host>
         <数据库dbname>monitor</数据库dbname>
         <数据库username>root</数据库username>
-        <数据库password>limengjie</数据库password>
+        <数据库password>123456</数据库password>
         <数据库port>3306</数据库port>
 	</常规>
     <中控>
@@ -21,8 +21,8 @@
         <property name="设备类型" value="ZK" />
         <property name="设备图标" value="img/pc.png" />
         <property name="运行状态" readDatabase="1" />
-        <property name="电源" readDatabase="1" />
-        <property name="内侧内存容量"  readDatabase="1" unit="GB" multiple="0.1"/>
+        <property name="电源" readDatabase="1"/>
+        <property name="内侧内存容量"  readDatabase="1" unit="GB" multiple="0.1" mask="ff"/>
     </中控>
 	<中继>
 		<配备>1</配备>		// 1-有配备，0-未配备
@@ -77,7 +77,7 @@
 	<转发>
         <转发设备>
             <property name="设备名称" value="转发设备1" />
-            <property name="设备ID" value=" 51" />
+            <property name="设备ID" value="51" />
             <property name="设备类型" value="ZF" />
             <property name="设备图标" value="img/pc.png" />
             <property name="运行状态" readDatabase="1" />

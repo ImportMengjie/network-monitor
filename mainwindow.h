@@ -36,6 +36,7 @@ public slots:
 private:
     XmlReader* config;
 
+    QSqlDatabase db;
     QAction* openFilesAction;
     QAction* exitAction;
     QAction* generateInstructionsAction;

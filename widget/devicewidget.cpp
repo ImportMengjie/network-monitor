@@ -8,8 +8,8 @@ const QString DeviceWidget::goodState="6A";
 const QString DeviceWidget::badState="40";
 const QString DeviceWidget::selectRunningStateSegment = "SELECT * FROM running_state where deviceid=:deviceid order by create_datetime DESC limit 1";
 
-DeviceWidget::DeviceWidget(XmlReader config, QWidget *parent)
-    :QWidget(parent), monitorLayout(parent), config(config), thread(config){
+DeviceWidget::DeviceWidget(XmlReader config,const QSqlDatabase& db, QWidget *parent)
+    :QWidget(parent), monitorLayout(parent), config(config), thread(config), db(db){
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
 
@@ -71,15 +71,6 @@ DeviceWidget::DeviceWidget(XmlReader config, QWidget *parent)
     for(auto& device:rightWidgets)
         totalWidgets.append(device);
 
-    db = QSqlDatabase::addDatabase(config.baseconfig.dbDriver);
-
-    db.setHostName(config.baseconfig.dbHost);
-    db.setDatabaseName(config.baseconfig.dbName);
-    db.setUserName(config.baseconfig.dbUserName);
-    db.setPassword(config.baseconfig.dbPassword);
-    db.setPort(config.baseconfig.dbPort);
-    db.setConnectOptions("connect_timeout=2");
-
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateUi()));
     connect(&thread, SIGNAL(refreshUi()), this, SLOT(updateUi()));
@@ -124,7 +115,8 @@ void DeviceWidget::setDeviceWidgetsInfo(DeviceWidgets &deviceWidgets) {
 
 int DeviceWidget::getStatuValue(const QString &content, const QString &mask) {
     int left = mask.indexOf("f",0, Qt::CaseInsensitive);
-    int right = mask.indexOf("f", left, Qt::CaseInsensitive);
+    int right = mask.lastIndexOf("f", -1, Qt::CaseInsensitive);
+    qDebug()<<content.mid(left, right-left+1);
     int ret = content.mid(left, right-left+1).toUInt(nullptr, 16);
     return ret;
 }
@@ -136,7 +128,7 @@ void DeviceWidget::updateUi() {
         QSqlQuery selectRunningStateQuery(db);
         selectRunningStateQuery.prepare(DeviceWidget::selectRunningStateSegment);
         for(auto& device:totalWidgets){
-            selectRunningStateQuery.bindValue(":deviceid", device.deviceInfo->DeviceID);
+            selectRunningStateQuery.bindValue(":deviceid", device.deviceInfo->getDeviceId());
             selectRunningStateQuery.exec();
             if(selectRunningStateQuery.isActive()&&selectRunningStateQuery.first()){
                 QDateTime create_datetime = selectRunningStateQuery.value(2).toDateTime();
@@ -150,10 +142,11 @@ void DeviceWidget::updateUi() {
                         device.deviceInfo->deviceState = 2;
                     for(auto& value:device.deviceInfo->otherList){
                         if(value.mask.size()){
-                            uint val = getStatuValue(content, value.mask);
-                            if(val<value.min_value.toUInt()||val>value.max_value.toUInt()){
+                            double val = getStatuValue(content, value.mask);
+                            if(value.min_value.size()&&val<value.min_value.toUInt())
                                 device.deviceInfo->deviceState = 2;
-                            }
+                            if(value.max_value.size()&&val>value.max_value.toUInt())
+                                device.deviceInfo->deviceState = 2;
                             if(value.multiple)
                                 val*=value.multiple;
                             value.value = QString::number(val)+value.unit;
@@ -165,6 +158,8 @@ void DeviceWidget::updateUi() {
                 }
 
             }else{
+                if(!selectRunningStateQuery.isActive())
+                    qWarning()<<selectRunningStateQuery.lastError()<<endl;
                 device.deviceInfo->deviceState = 3;
             }
             setDeviceWidgetsInfo(device);

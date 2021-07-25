@@ -20,7 +20,7 @@ class DeviceWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DeviceWidget(XmlReader config, QWidget *parent = nullptr);
+    explicit DeviceWidget(XmlReader config,const QSqlDatabase& db, QWidget *parent = nullptr);
 
     void addStatusFiles(const QStringList& files);
 

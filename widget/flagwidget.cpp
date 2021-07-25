@@ -23,10 +23,10 @@ void FlagWidget::paintEvent(QPaintEvent *event){
     QBrush greenBrush(Qt::green);
     QPainter painter(this);
     painter.setPen(pen);
-    if(flag==0)
-        painter.setBrush(redBrush);
-    else if(flag==1)
+    if(flag==1)
         painter.setBrush(greenBrush);
+    else if(flag==2)
+        painter.setBrush(redBrush);
     else
         painter.setBrush(grayBrush);
     painter.drawEllipse(0, 0, height_-2, height_-2);

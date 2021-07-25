@@ -15,11 +15,21 @@ MainWindow::MainWindow(XmlReader* config,QWidget *parent)
     : QMainWindow(parent), config(config)
     , ui(new Ui::MainWindow),monitorLayout(parent),mainLayout(parent){
     ui->setupUi(this);
-    deviceWidget = new DeviceWidget(*config);
+    db = QSqlDatabase::addDatabase(config->baseconfig.dbDriver);
+
+    db.setHostName(config->baseconfig.dbHost);
+    db.setDatabaseName(config->baseconfig.dbName);
+    db.setUserName(config->baseconfig.dbUserName);
+    db.setPassword(config->baseconfig.dbPassword);
+    db.setPort(config->baseconfig.dbPort);
+    db.setConnectOptions("connect_timeout=2");
+    db.open();
+
+    deviceWidget = new DeviceWidget(*config, db);
     deviceWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mainLayout.addWidget(deviceWidget);
     ui->centralwidget->setLayout(&mainLayout);
-    lookUpLogDialog = new LookUpLogDialog(*config);
+    lookUpLogDialog = new LookUpLogDialog(*config, db);
 
     createActions();
     createMenu();
@@ -67,7 +77,6 @@ void MainWindow::generateInstructions() {
 
 void MainWindow::lookupLog() {
     lookUpLogDialog->show();
-
 }
 
 MainWindow::~MainWindow() {
