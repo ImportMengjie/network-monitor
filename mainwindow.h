@@ -11,6 +11,7 @@
 #include "widget/devicewidget.h"
 #include "parsedatathread.h"
 #include "window/lookuplogdialog.h"
+#include "window/createinstructiondialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,6 +44,7 @@ private:
     QAction* lookupLogAction;
 
     LookUpLogDialog* lookUpLogDialog;
+    CreateInstructionDialog* createInstructionDialog;
 
     QMenu* fileMenu;
     QMenu* toolsMenu;

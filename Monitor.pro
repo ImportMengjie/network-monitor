@@ -30,6 +30,7 @@ SOURCES += \
     widget/flagwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    window/createinstructiondialog.cpp \
     window/lookuplogdialog.cpp
 
 HEADERS += \
@@ -44,10 +45,12 @@ HEADERS += \
     widget/devicewidget.h \
     widget/flagwidget.h \
     mainwindow.h \
+    window/createinstructiondialog.h \
     window/lookuplogdialog.h
 
 FORMS += \
     mainwindow.ui \
+    window/createinstructiondialog.ui \
     window/lookuplogdialog.ui
 
 # Default rules for deployment.

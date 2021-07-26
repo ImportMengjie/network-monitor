@@ -30,6 +30,7 @@ MainWindow::MainWindow(XmlReader* config,QWidget *parent)
     mainLayout.addWidget(deviceWidget);
     ui->centralwidget->setLayout(&mainLayout);
     lookUpLogDialog = new LookUpLogDialog(*config, db);
+    createInstructionDialog = new CreateInstructionDialog(*config, db);
 
     createActions();
     createMenu();
@@ -72,7 +73,7 @@ void MainWindow::openFiles() {
 }
 
 void MainWindow::generateInstructions() {
-
+    createInstructionDialog->show();
 }
 
 void MainWindow::lookupLog() {
