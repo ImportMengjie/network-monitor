@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QDateTime>
+#include <QtEndian>
 
 struct DeviceState{
     quint8 deviceID;
@@ -21,7 +22,7 @@ struct DeviceState{
     QString getSatus(){
         QString ret = "";
         for(int i=0;i<status.size();i++){
-            quint8 num = status.mid(i, 1).toUShort();
+            quint8 num = qFromBigEndian<quint8>(status.mid(i, 1));
             ret+=QString("%1").arg(num, 2, 16, QLatin1Char('0'));
         }
         return ret;

@@ -1,17 +1,18 @@
 #include "devicewidget.h"
 
+#include <QMessageBox>
 #include <QSqlError>
 
 const int DeviceWidget::imgHeight = 100;
 const int DeviceWidget::imgWidth = 100;
-const QString DeviceWidget::goodState="6A";
+const QString DeviceWidget::goodState="6a";
 const QString DeviceWidget::badState="40";
 const QString DeviceWidget::selectRunningStateSegment = "SELECT * FROM running_state where deviceid=:deviceid order by create_datetime DESC limit 1";
 
 DeviceWidget::DeviceWidget(XmlReader config,const QSqlDatabase& db, QWidget *parent)
-    :QWidget(parent), monitorLayout(parent), config(config), thread(config), db(db){
+    :QWidget(parent), config(config), thread(config), db(db){
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
+    monitorLayout = new QGridLayout(parent);
 
     for(auto& device:config.sendDeviceList){
         this->leftWidgets.append(genWidgetsFromDeviceInfo(&device));
@@ -29,25 +30,25 @@ DeviceWidget::DeviceWidget(XmlReader config,const QSqlDatabase& db, QWidget *par
     int mid_col = 6;
     if(config.useBridge){
         for(auto& device:midWidgets){
-            monitorLayout.addWidget(device.img, center_idx*2, mid_col, 2, 2, Qt::AlignCenter);
-            monitorLayout.addWidget(device.text, center_idx*2+2, mid_col, 2, 2, Qt::AlignTop|Qt::AlignHCenter);
-            monitorLayout.addWidget(device.flag, center_idx*2, mid_col+2, Qt::AlignBottom|Qt::AlignLeft);
+            monitorLayout->addWidget(device.img, center_idx*2, mid_col, 2, 2, Qt::AlignCenter);
+            monitorLayout->addWidget(device.text, center_idx*2+2, mid_col, 2, 2, Qt::AlignTop|Qt::AlignHCenter);
+            monitorLayout->addWidget(device.flag, center_idx*2, mid_col+2, Qt::AlignBottom|Qt::AlignLeft);
             mid_col += 3;
         }
     }
     // add center
-    monitorLayout.addWidget(centerWidget.img, center_idx*2, mid_col, 2, 2, Qt::AlignCenter);
-    monitorLayout.addWidget(centerWidget.text, center_idx*2+2, mid_col, 2, 2, Qt::AlignTop|Qt::AlignHCenter);
-    monitorLayout.addWidget(centerWidget.flag, center_idx*2, mid_col+2, Qt::AlignBottom|Qt::AlignLeft);
+    monitorLayout->addWidget(centerWidget.img, center_idx*2, mid_col, 2, 2, Qt::AlignCenter);
+    monitorLayout->addWidget(centerWidget.text, center_idx*2+2, mid_col, 2, 2, Qt::AlignTop|Qt::AlignHCenter);
+    monitorLayout->addWidget(centerWidget.flag, center_idx*2, mid_col+2, Qt::AlignBottom|Qt::AlignLeft);
     int right_left_col = mid_col+4;
 
     //add left
     int left_row_add = (center_idx - (this->leftWidgets.size()*2-1)/2)*2;
     for(int i=0; i<leftWidgets.size();i++){
         int left_row = left_row_add + i*4;
-        monitorLayout.addWidget(leftWidgets[i].img, left_row, 2, 2, 2, Qt::AlignLeft);
-        monitorLayout.addWidget(leftWidgets[i].text, left_row, 0, 2, 2, Qt::AlignRight);
-        monitorLayout.addWidget(leftWidgets[i].flag, left_row, 3, Qt::AlignBottom|Qt::AlignLeft);
+        monitorLayout->addWidget(leftWidgets[i].img, left_row, 2, 2, 2, Qt::AlignLeft);
+        monitorLayout->addWidget(leftWidgets[i].text, left_row, 0, 2, 2, Qt::AlignRight);
+        monitorLayout->addWidget(leftWidgets[i].flag, left_row, 3, Qt::AlignBottom|Qt::AlignLeft);
 
     }
 
@@ -55,11 +56,11 @@ DeviceWidget::DeviceWidget(XmlReader config,const QSqlDatabase& db, QWidget *par
     int right_row_add = (center_idx - (this->rightWidgets.size()*2-1)/2)*2;
     for(int i=0; i<rightWidgets.size();i++){
         int right_row = right_row_add + i*4;
-        monitorLayout.addWidget(rightWidgets[i].img, right_row, right_left_col, 2, 2, Qt::AlignRight);
-        monitorLayout.addWidget(rightWidgets[i].text, right_row, right_left_col+2, 2, 2, Qt::AlignLeft);
-        monitorLayout.addWidget(rightWidgets[i].flag, right_row, right_left_col-1, Qt::AlignBottom|Qt::AlignRight);
+        monitorLayout->addWidget(rightWidgets[i].img, right_row, right_left_col, 2, 2, Qt::AlignRight);
+        monitorLayout->addWidget(rightWidgets[i].text, right_row, right_left_col+2, 2, 2, Qt::AlignLeft);
+        monitorLayout->addWidget(rightWidgets[i].flag, right_row, right_left_col-1, Qt::AlignBottom|Qt::AlignRight);
     }
-    this->setLayout(&monitorLayout);
+    this->setLayout(monitorLayout);
 
     totalWidgets.append(centerWidget);
     if(config.useBridge){
@@ -158,13 +159,16 @@ void DeviceWidget::updateUi() {
                 }
 
             }else{
-                if(!selectRunningStateQuery.isActive())
+                if(!selectRunningStateQuery.isActive()){
+                    QMessageBox::critical(this, "数据库连接错误", "请检查配置文件和数据库运行状态");
                     qWarning()<<selectRunningStateQuery.lastError()<<endl;
+                }
                 device.deviceInfo->deviceState = 3;
             }
             setDeviceWidgetsInfo(device);
         }
     }else{
+        QMessageBox::critical(this, "数据库连接错误", "请检查配置文件和数据库运行状态");
         qWarning() << db.lastError();
         for(auto& device:totalWidgets){
             device.deviceInfo->deviceState = 3;

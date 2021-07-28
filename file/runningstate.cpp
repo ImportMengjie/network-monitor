@@ -4,10 +4,16 @@
 #include <QFile>
 #include <QDebug>
 #include <QDataStream>
+#include <QtEndian>
 
 const quint16 RunningState::magic= 0x3AB9;
 const quint8 RunningState::goodStatus = 0x6A;
 const quint8 RunningState::badStatus = 0x40;
+
+template<class T>
+    static T conver(const QByteArray& array){
+    return qFromBigEndian<T>(array);
+}
 
 bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningState)
 {
@@ -22,26 +28,27 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
         qWarning()<<filePath<<" file size is "<<totalData.size()<<endl;
         return false;
     }
-    quint16 crc = totalData.right(2).toShort();
+    bool isok=false;
+    quint16 crc = conver<quint16>(totalData.right(2));
     QByteArray data = totalData.left(totalData.size()-2);
     if(CrcChecksum::crc16ForX25(data)!=crc){
         qWarning()<<filePath<<" crc test error"<<endl;
         return false;
     }
     int left=0;
-    if(readAndMove(data, left, 2).toUShort()!=magic){
+    if(conver<quint16>(readAndMove(data, left, 2))!=magic){
         qWarning()<<filePath<<" magic number error "<<endl;
         return false;
     }
     left+=2;
     uint year,month = 0, day=0, hours=0, minus=0,sec=0,millisec=0;
-    year = readAndMove(data, left, 1).toUInt() + 2000;
-    month = readAndMove(data,left,1).toUInt();
-    day = readAndMove(data,left,1).toUInt();
-    hours = readAndMove(data, left, 1).toUInt();
-    minus = readAndMove(data, left, 1).toUInt();
-    sec = readAndMove(data, left,1).toUInt();
-    millisec = readAndMove(data,left,2).toUInt();
+    year = conver<quint8>(readAndMove(data, left, 1)) + 2000;
+    month = conver<quint8>(readAndMove(data,left,1));
+    day = conver<quint8>(readAndMove(data,left,1));
+    hours = conver<quint8>(readAndMove(data, left, 1));
+    minus = conver<quint8>(readAndMove(data, left, 1));
+    sec = conver<quint8>(readAndMove(data, left,1));
+    millisec = conver<quint16>(readAndMove(data,left,2));
     runningState.reportDateTime.setDate(QDate(year, month, day));
     runningState.reportDateTime.setTime(QTime(hours, minus, sec, millisec));
     runningState.reportTime = QString("%1-%2-%3 %4:%5:%6:%7")
@@ -54,16 +61,16 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
             .arg(millisec, 3, 10, QLatin1Char('0'));
 
 
-    uint total_data_size =  readAndMove(data, left, 4).toUInt();
+    uint total_data_size =  conver<quint32>(readAndMove(data, left, 4));
     if(total_data_size!=data.size()-left){
         qWarning()<<"file size:"<<data.size()-left<<";need size:"<<total_data_size<<endl;
         return false;
     }
     {
-        uint status_len = readAndMove(data, left, 1).toUInt();
+        uint status_len = conver<quint8>(readAndMove(data, left, 1));
         QByteArray status_bytes = readAndMove(data, left, status_len);
-        runningState.centerDevice.deviceID = status_bytes.left(1).toUInt();
-        runningState.centerDevice.runningStatus = status_bytes.mid(2, 1).toUInt();
+        runningState.centerDevice.deviceID = conver<quint8>(status_bytes.left(1));
+        runningState.centerDevice.runningStatus = conver<quint8>(status_bytes.mid(2, 1));
         if(runningState.centerDevice.runningStatus!=goodStatus&&runningState.centerDevice.runningStatus!=badStatus){
             qWarning()<<"error center device status:"<<runningState.centerDevice.runningStatus<<endl;
             return false;
@@ -72,10 +79,10 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
     }
     while(left<data.size()){
         DeviceState device;
-        uint status_len = readAndMove(data, left, 1).toUInt();
+        uint status_len = conver<quint8>(readAndMove(data, left, 1));
         QByteArray status_bytes = readAndMove(data, left, status_len);
-        device.deviceID = status_bytes.left(1).toUInt();
-        device.runningStatus = status_bytes.mid(1, 1).toUInt();
+        device.deviceID = conver<quint8>(status_bytes.left(1));
+        device.runningStatus = conver<quint8>(status_bytes.mid(1, 1));
         if(device.runningStatus!=goodStatus&&device.runningStatus!=badStatus){
             qWarning()<<"error other device status:"<<device.runningStatus<<endl;
             return false;

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include "bean/xmlreader.h"
 
@@ -11,16 +12,20 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     XmlReader reader("/Users/mengjie/Documents/project/55/Monitor/setting.xml");
-    reader.readFromXml();
-
-    quint8 c = 0x0A;
-    QString s = QString("%1").arg(c, 2, 16, QLatin1Char('0'));
-    qDebug()<<QString("%1").arg(c, 2, 16, QLatin1Char('0'));
+    bool isOk = reader.readFromXml();
+    if(!isOk){
+        QMessageBox::critical(nullptr, "配置文件错误", "配置文件有误");
+        return 1;
+    }
+    QString errorMessage = reader.verfiy();
+    if(errorMessage.size()){
+        QMessageBox::critical(nullptr, "配置文件错误", errorMessage);
+        return 1;
+    }
 
 
     MainWindow w(&reader);
     w.setWindowTitle(reader.baseconfig.sytemName+":"+reader.baseconfig.sytemId);
-//    w.show();
     w.showMaximized();
     return a.exec();
 }

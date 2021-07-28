@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMessageBox>
 
 const quint16 CreateInstructionDialog::magic = 0xB39A;
 const quint16 CreateInstructionDialog::searchMagic = 0xb377;
@@ -33,6 +34,7 @@ CreateInstructionDialog::CreateInstructionDialog(const XmlReader& config,const Q
     QDialog(parent),
     ui(new Ui::CreateInstructionDialog),config(config),db(db) {
     ui->setupUi(this);
+    this->setWindowTitle("生成指令文件");
     for(int i=0;i<restartSize;i++){
         restartCheckBoxs.append(new QCheckBox(restartAndShutdownPrefix.arg(i+1)));
         restartCheckBoxs.back()->setCheckState(Qt::Checked);
@@ -50,6 +52,10 @@ CreateInstructionDialog::CreateInstructionDialog(const XmlReader& config,const Q
     settingCheckBox = new QCheckBox("设备参数设置指令");
     settingCheckBox->setCheckState(Qt::Unchecked);
     createInstructionButton = new QPushButton("生成指令");
+    QHBoxLayout* createInstaructionLayout = new QHBoxLayout();
+    createInstaructionLayout->addStretch();
+    createInstaructionLayout->addWidget(createInstructionButton);
+    createInstaructionLayout->addStretch();
 
     restartAndShutdownLayout = new QHBoxLayout();
     restartLayout = new QVBoxLayout();
@@ -84,8 +90,8 @@ CreateInstructionDialog::CreateInstructionDialog(const XmlReader& config,const Q
     mainLayout->addStretch();
     mainLayout->addWidget(settingCheckBox);
     mainLayout->addStretch();
-    mainLayout->addWidget(createInstructionButton);
-    mainLayout->addStretch();
+    mainLayout->addLayout(createInstaructionLayout);
+//    mainLayout->addStretch();
     this->setLayout(mainLayout);
 
     totalRestartCheckBoxs.append(restartCenterCheckBox);
@@ -104,6 +110,7 @@ CreateInstructionDialog::~CreateInstructionDialog()
 }
 
 void CreateInstructionDialog::handleSaveInstruction() {
+    this->createInstructionButton->setDisabled(true);
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString baseName = QString("%1-%2.akg").arg(config.baseconfig.sytemId).arg(currentDateTime.toString("yyyyMMddhhmmss"));
     QString fileName = PathUtils::concatDir(config.baseconfig.outputDir, baseName);
@@ -116,7 +123,9 @@ void CreateInstructionDialog::handleSaveInstruction() {
     QFile file(fileName);
     bool isOK = file.open(QIODevice::WriteOnly);
     if(!isOK){
+        QMessageBox::critical(this, "文件件错误", "") ;
         qWarning()<<file.error()<<endl;
+        this->createInstructionButton->setEnabled(true);
         return;
     }
     QSqlQuery inseartRunningLogQuery(db);
@@ -156,6 +165,7 @@ void CreateInstructionDialog::handleSaveInstruction() {
     }
     if(settingCheckBox->isChecked()){
         qWarning()<<"undefined setting param"<<endl;
+        this->createInstructionButton->setEnabled(true);
         return;
     }else{
         dataArray<<quint8(0);
@@ -172,6 +182,7 @@ void CreateInstructionDialog::handleSaveInstruction() {
     if(inseartRunningLogQuery.numRowsAffected()<=0){
         qWarning()<<"file log sql fail!"<<inseartRunningLogQuery.lastError()<<endl;
     }
-
+    QMessageBox::about(this, "成功", "文件保存成功");
+    this->createInstructionButton->setEnabled(true);
 
 }

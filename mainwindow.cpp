@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QTimer>
 #include <QFileDialog>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(XmlReader* config,QWidget *parent)
@@ -24,6 +25,9 @@ MainWindow::MainWindow(XmlReader* config,QWidget *parent)
     db.setPort(config->baseconfig.dbPort);
     db.setConnectOptions("connect_timeout=2");
     db.open();
+    if(!db.isValid()||!db.isOpen()){
+        QMessageBox::critical(this, "数据库连接错误", "请检查数据库运行状态及配置文件!");
+    }
 
     deviceWidget = new DeviceWidget(*config, db);
     deviceWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);

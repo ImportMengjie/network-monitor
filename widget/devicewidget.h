@@ -32,7 +32,7 @@ public:
     static const QString goodState;
     static const QString badState;
     static const QString selectRunningStateSegment;
-    QGridLayout monitorLayout;
+    QGridLayout* monitorLayout;
 
 public slots:
     void updateUi();

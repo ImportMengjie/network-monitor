@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QDir>
+#include <QMessageBox>
 
 const QString ParseDataThread::insertRunningState = "INSERT INTO running_state(deviceid,create_datetime,parse_datetime,state,content) VALUES(:deviceid, :create_datetime, :parse_datetime, :state, :content)";
 const QString ParseDataThread::insertRunningLog = "INSERT INTO running_log(log_type,log_datetime,log_content) VALUES(:log_type, :log_datetime, :log_content)";
