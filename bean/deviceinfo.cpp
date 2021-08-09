@@ -1,4 +1,5 @@
 #include "deviceinfo.h"
+#include "file/pathutils.h"
 
 const QString DeviceInfo::DeviceName = "设备名称";
 const QString DeviceInfo::DeviceID = "设备ID";
@@ -31,5 +32,5 @@ QString DeviceInfo::getDeviceState() {
 
 QString DeviceInfo::getDeviceIco()
 {
-    return data[DeviceInfo::DeviceIco].value;
+    return PathUtils::getAbsPath(data[DeviceInfo::DeviceIco].value);
 }

@@ -4,6 +4,8 @@
 #include "file/pathutils.h"
 
 #include <QSqlDatabase>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QSqlError>
 #include <QDebug>
 #include <QDir>

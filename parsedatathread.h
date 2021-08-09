@@ -3,6 +3,8 @@
 
 #include <QThread>
 #include <QQueue>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QSqlQuery>
 
 #include "bean/xmlreader.h"

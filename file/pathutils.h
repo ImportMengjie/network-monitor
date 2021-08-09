@@ -4,11 +4,19 @@
 #include <QString>
 #include <QDir>
 #include <QDateTime>
+#include <QCoreApplication>
 
 class PathUtils
 {
 public:
     PathUtils() = delete;
+
+    static QString getAbsPath(const QString& path){
+        if(path.startsWith("/"))
+            return path;
+        else
+         return concatDir(QCoreApplication::applicationDirPath(), path);
+    }
 
     static QString concatDir(const QString& dir, const QString& subDir){
         if(dir.endsWith("/")){

@@ -4,14 +4,17 @@
 #include <QMessageBox>
 
 #include "bean/xmlreader.h"
+#include "file/pathutils.h"
 
 #include <QDataStream>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    qDebug() << "The driver should be put in this path:" << QCoreApplication::libraryPaths();
+        qDebug() << "Available drivers:" << QSqlDatabase::drivers();
 
-    XmlReader reader("/Users/mengjie/Documents/project/55/Monitor/setting.xml");
+    XmlReader reader(PathUtils::getAbsPath("setting.xml"));
     bool isOk = reader.readFromXml();
     if(!isOk){
         QMessageBox::critical(nullptr, "配置文件错误", "配置文件有误");
