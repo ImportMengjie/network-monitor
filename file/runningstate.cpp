@@ -28,7 +28,6 @@ bool RunningState::loadeFromFile(const QString& filePath, RunningState& runningS
         qWarning()<<filePath<<" file size is "<<totalData.size()<<endl;
         return false;
     }
-    bool isok=false;
     quint16 crc = conver<quint16>(totalData.right(2));
     QByteArray data = totalData.left(totalData.size()-2);
     if(CrcChecksum::crc16ForX25(data)!=crc){

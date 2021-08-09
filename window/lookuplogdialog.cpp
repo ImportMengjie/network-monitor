@@ -226,7 +226,6 @@ void LookUpLogDialog::setTableData(){
         this->setTableQuery();
 
     }
-    qDebug()<<whereState;
 }
 
 uint LookUpLogDialog::getPageCount(){

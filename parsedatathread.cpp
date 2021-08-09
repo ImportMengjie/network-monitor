@@ -44,7 +44,7 @@ bool ParseDataThread::consumer_data_paths(QQueue<QString> &dataPaths, const XmlR
                     return false;
                 }
                 if(device.runningStatus!=RunningState::goodStatus||!config.isDeviceGood(device.getDeviceID(), device.getSatus(), device.getRunningStatus()))
-                    errorDeviceId.append(device.getDeviceID()+",");
+                    errorDeviceId.append(device.getDeviceID()+";");
             }
             queryRunningLog.bindValue(":log_datetime", r.reportDateTime);
             if(errorDeviceId.isEmpty()){

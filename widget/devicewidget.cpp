@@ -117,7 +117,6 @@ void DeviceWidget::setDeviceWidgetsInfo(DeviceWidgets &deviceWidgets) {
 int DeviceWidget::getStatuValue(const QString &content, const QString &mask) {
     int left = mask.indexOf("f",0, Qt::CaseInsensitive);
     int right = mask.lastIndexOf("f", -1, Qt::CaseInsensitive);
-    qDebug()<<content.mid(left, right-left+1);
     int ret = content.mid(left, right-left+1).toUInt(nullptr, 16);
     return ret;
 }
