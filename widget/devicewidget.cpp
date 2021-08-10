@@ -131,11 +131,11 @@ void DeviceWidget::updateUi() {
             selectRunningStateQuery.bindValue(":deviceid", device.deviceInfo->getDeviceId());
             selectRunningStateQuery.exec();
             if(selectRunningStateQuery.isActive()&&selectRunningStateQuery.first()){
-                QDateTime create_datetime = selectRunningStateQuery.value(2).toDateTime();
+                QDateTime create_datetime = selectRunningStateQuery.value(1).toDateTime();
                 QDateTime current_datetime = QDateTime::currentDateTime();
                 if(create_datetime.secsTo(current_datetime)<config.baseconfig.reportInterval){
-                    QString state = selectRunningStateQuery.value(4).toString();
-                    QString content = selectRunningStateQuery.value(5).toString();
+                    QString state = selectRunningStateQuery.value(3).toString();
+                    QString content = selectRunningStateQuery.value(4).toString();
                     if(state==goodState)
                         device.deviceInfo->deviceState = 1;
                     else
@@ -159,7 +159,7 @@ void DeviceWidget::updateUi() {
 
             }else{
                 if(!selectRunningStateQuery.isActive()){
-                    QMessageBox::critical(this, "数据库连接错误", "请检查配置文件和数据库运行状态");
+                    // QMessageBox::critical(this, "数据库连接错误", "请检查配置文件和数据库运行状态");
                     qWarning()<<selectRunningStateQuery.lastError()<<endl;
                 }
                 device.deviceInfo->deviceState = 3;

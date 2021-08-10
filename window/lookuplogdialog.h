@@ -57,10 +57,9 @@ private:
     QString getSelectLogKeyword();
 
     enum running_log{
-        seq=0,
-        log_type=1,
-        log_datetime=2,
-        log_content=3
+        log_type=0,
+        log_datetime=1,
+        log_content=2
 
     };
     XmlReader config;

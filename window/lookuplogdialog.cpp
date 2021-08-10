@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QMessageBox>
 
 LookUpLogDialog::LookUpLogDialog(const XmlReader &config,const QSqlDatabase& db, QWidget *parent) :
     QDialog(parent),config(config),db(db),
@@ -141,7 +142,7 @@ void LookUpLogDialog::saveToCsvFile(){
     QDateTime start(startDateWidget->date(), QTime(0,0));
     QDateTime end(endDateWidget->date(), QTime(0,0));
 
-    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by seq")
+    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by log_datetime")
             .arg(getSelectLogTypeFilter())
             .arg(getSelectLogKeyword());
 
@@ -160,11 +161,11 @@ void LookUpLogDialog::saveToCsvFile(){
         }
         while(pageDataQuery.next()){
             out<<pageDataQuery.value(0).toUInt()<<','
-              <<pageDataQuery.value(1).toUInt()<<','
-             <<pageDataQuery.value(2).toDateTime().toString("yyyy-MM-dd:hh:mm:ss:zzz")<<','
-            <<pageDataQuery.value(3).toString()<<endl;
+             <<pageDataQuery.value(1).toDateTime().toString("yyyy-MM-dd:hh:mm:ss:zzz")<<','
+            <<pageDataQuery.value(2).toString()<<endl;
         }
         csvFile.close();
+        QMessageBox::about(this, "成功", "文件保存成功");
     }
 
 }
@@ -175,7 +176,7 @@ uint LookUpLogDialog::getTotalCount(){
     QDateTime end(endDateWidget->date(), QTime(0,0));
 
 
-    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by seq")
+    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by log_datetime")
             .arg(getSelectLogTypeFilter())
             .arg(getSelectLogKeyword());
 
@@ -204,7 +205,7 @@ void LookUpLogDialog::setTableData(){
     QDateTime start(startDateWidget->date(), QTime(0,0));
     QDateTime end(endDateWidget->date(), QTime(0,0));
 
-    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by seq")
+    QString whereState = QString(" where (log_datetime>=:start and log_datetime<=:end)%1%2 order by log_datetime")
             .arg(getSelectLogTypeFilter())
             .arg(getSelectLogKeyword());
     QString limitOffsetState = QString(" limit %1 offset %2").arg(pageSize).arg(currentPage*pageSize);
@@ -224,7 +225,6 @@ void LookUpLogDialog::setTableData(){
         }
         tableQuery->setQuery(pageDataQuery);
         this->setTableQuery();
-
     }
 }
 
@@ -238,7 +238,7 @@ void LookUpLogDialog::setPageLabel(){
 }
 
 void LookUpLogDialog::setTableQuery(){
-    tableQuery->setHeaderData(running_log::seq, Qt::Horizontal, "序号");
+    // tableQuery->setHeaderData(running_log::seq, Qt::Horizontal, "序号");
     tableQuery->setHeaderData(running_log::log_datetime, Qt::Horizontal, "时间");
     tableQuery->setHeaderData(running_log::log_type, Qt::Horizontal, "类型");
     tableQuery->setHeaderData(running_log::log_content, Qt::Horizontal, "内容");

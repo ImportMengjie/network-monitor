@@ -2,25 +2,25 @@
 	<常规>
         <系统ID>001</系统ID >
 		<系统名称>监控系统</系统名称>
-		<监视文件夹>/Users/mengjie/Documents/project/55/folder</监视文件夹>
-		<历史文件夹>/Users/mengjie/Documents/project/55/history</历史文件夹>
-		<错误文件夹>/Users/mengjie/Documents/project/55/error</错误文件夹>
-		<导出文件夹>/Users/mengjie/Documents/project/55/folder</导出文件夹>
-		<刷新显示间隔秒数>1</刷新显示间隔秒数>
-		<状态上报间隔秒数>60000</状态上报间隔秒数>
-        <数据库driver>QMYSQL</数据库driver>
+		<监视文件夹>/media/psf/Home/Documents/project/55/folder</监视文件夹>
+		<历史文件夹>/home/mengjie/Documents/history</历史文件夹>
+		<错误文件夹>/home/mengjie/Documents/error</错误文件夹>
+		<导出文件夹>/home/mengjie/Documents/error</导出文件夹>
+		<刷新显示间隔秒数>5</刷新显示间隔秒数>
+		<状态上报间隔秒数>60</状态上报间隔秒数>
+        <数据库driver>QKINGBASE</数据库driver>
         <数据库host>127.0.0.1</数据库host>
         <数据库dbname>monitor</数据库dbname>
-        <数据库username>root</数据库username>
+        <数据库username>system</数据库username>
         <数据库password>123456</数据库password>
-        <数据库port>3306</数据库port>
+        <数据库port>54321</数据库port>
 	</常规>
     <中控>
         <property name="设备名称" value="中控" />
         <property name="设备ID" value="1" />
         <property name="设备类型" value="ZK" />
         <property name="设备图标" value="img/pc.png" />
-        <property name="运行状态" readDatabase="1" />
+        <property name="运行状态" readDatabase="1" mask="0000ff" />
         <property name="电源" readDatabase="1"/>
         <property name="内侧内存容量"  readDatabase="1" unit="GB" multiple="0.1" mask="0000000000000000ff" maxValue="20"/>
         <property name="u盘剩余容量"  readDatabase="1" unit="GB" multiple="0.1" mask="00000000000000000000ff" minValue="40"/>
@@ -33,7 +33,7 @@
             <property name="设备ID" value="11" />
             <property name="设备类型" value="ZJF" />
             <property name="设备图标" value="img/pc.png" />
-            <property name="运行状态" readDatabase="1" />
+            <property name="运行状态" readDatabase="1" mask="00ff"/>
             <property name="电源" readDatabase="1" />
             <property name="其它参数等" readDatabase="1" />
         </发中继>
